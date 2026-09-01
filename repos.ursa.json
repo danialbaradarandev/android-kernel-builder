@@ -13,12 +13,24 @@
         "repo": "https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/arm/arm-eabi-4.8",
         "branch": "master",
         "name": "gcc"
+      },
+      {
+        "repo": "https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/arm/arm-eabi-4.8",
+        "branch": "master",
+        "name": "binutils"
       }
     ],
     "params": {
       "ARCH": "arm",
       "CROSS_COMPILE": "arm-eabi-",
-      "CC": "gcc"
+      "CC": "gcc",
+      "LD": "arm-eabi-ld",
+      "AR": "arm-eabi-ar",
+      "AS": "arm-eabi-as",
+      "NM": "arm-eabi-nm",
+      "OBJCOPY": "arm-eabi-objcopy",
+      "OBJDUMP": "arm-eabi-objdump",
+      "STRIP": "arm-eabi-strip"
     }
   }
 ]
