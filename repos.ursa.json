@@ -3,29 +3,22 @@
     "kernelSource": {
       "name": "sony-msm8974",
       "repo": "https://github.com/sonyxperiadev/kernel",
-      "branch": "aosp/K.P.4.0.r1", 
+      "branch": "aosp/LA.UM.9.14.r1",
       "device": "sirius",
       "defconfig": "sirius_defconfig"
     },
     "withKernelSU": false,
     "toolchains": [
       {
-        "repo": "https://android.googlesource.com/platform/prebuilts/gas/linux-x86",
+        "repo": "https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/arm/arm-eabi-4.8",
         "branch": "master",
-        "name": "gas"
-      },
-      {
-        "repo": "https://gitlab.com/ThankYouMario/android_prebuilts_clang-standalone",
-        "branch": "main",
-        "name": "clang"
+        "name": "gcc"
       }
     ],
     "params": {
       "ARCH": "arm",
-      "CROSS_COMPILE": "arm-linux-androideabi-",
-      "CROSS_COMPILE_ARM32": "arm-linux-androideabi-",
-      "CLANG_TRIPLE": "arm-linux-gnueabi-",
-      "CC": "clang"
+      "CROSS_COMPILE": "arm-eabi-",
+      "CC": "gcc"
     }
   }
 ]
