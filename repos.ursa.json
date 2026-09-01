@@ -5,7 +5,7 @@
       "repo": "https://github.com/sonyxperiadev/kernel",
       "branch": "aosp/LA.UM.9.14.r1",
       "device": "sirius",
-      "defconfig": "sirius_defconfig"
+      "defconfig": "shinano_sirius_defconfig"
     },
     "withKernelSU": false,
     "toolchains": [
@@ -23,14 +23,7 @@
     "params": {
       "ARCH": "arm",
       "CROSS_COMPILE": "arm-eabi-",
-      "CC": "gcc",
-      "LD": "arm-eabi-ld",
-      "AR": "arm-eabi-ar",
-      "AS": "arm-eabi-as",
-      "NM": "arm-eabi-nm",
-      "OBJCOPY": "arm-eabi-objcopy",
-      "OBJDUMP": "arm-eabi-objdump",
-      "STRIP": "arm-eabi-strip"
+      "CC": "gcc"
     }
   }
 ]
