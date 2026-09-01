@@ -2,6 +2,7 @@ import os
 import sys
 import json
 import subprocess
+import glob
 
 def clone_repo(repo_url, branch, path):
     """Clone a git repository if it doesn't exist."""
@@ -11,6 +12,24 @@ def clone_repo(repo_url, branch, path):
     else:
         print(f"Repository {path} already exists. Pulling latest changes...")
         subprocess.check_call(["git", "-C", path, "pull"])
+
+def setup_toolchain(toolchains):
+    """Setup toolchain paths for cross-compilation."""
+    toolchain_paths = []
+    for tc in toolchains:
+        if "repo" in tc:
+            repo_url = tc["repo"]
+            branch = tc.get("branch", "master")
+            name = tc["name"]
+            # Clone toolchain
+            tc_dir = f"toolchains/{name}"
+            clone_repo(repo_url, branch, tc_dir)
+            # Find bin directory
+            bin_dirs = glob.glob(f"{tc_dir}/bin")
+            for bin_dir in bin_dirs:
+                if os.path.exists(bin_dir):
+                    toolchain_paths.append(bin_dir)
+    return toolchain_paths
 
 def build_kernel(config_file):
     """Main build function based on JSON config."""
@@ -27,28 +46,37 @@ def build_kernel(config_file):
         device = kernel_source.get("device")
         defconfig = kernel_source.get("defconfig")
         params = config.get("params", {})
+        toolchains = config.get("toolchains", [])
         
         arch = params.get("ARCH", "arm")
         cross_compile = params.get("CROSS_COMPILE", "arm-eabi-")
-        cross_compile_arm32 = params.get("CROSS_COMPILE_ARM32", "arm-eabi-")
-        clang_triple = params.get("CLANG_TRIPLE", "arm-linux-gnueabi-")
-        cc = params.get("CC", "clang")
+        cc = params.get("CC", "gcc")
 
+        # Setup toolchains
+        toolchain_paths = setup_toolchain(toolchains)
+        
         # Clone the kernel source
         kernel_dir = f"kernel/{device}"
         clone_repo(repo, branch, kernel_dir)
 
-        # Set up environment variables
+        # Set up environment variables with toolchain paths
         env = os.environ.copy()
         env["ARCH"] = arch
         env["CROSS_COMPILE"] = cross_compile
-        env["CROSS_COMPILE_ARM32"] = cross_compile_arm32
-        env["CLANG_TRIPLE"] = clang_triple
         env["CC"] = cc
+        
+        # Add toolchain paths to PATH
+        if toolchain_paths:
+            path_env = env.get("PATH", "")
+            for tc_path in toolchain_paths:
+                if tc_path not in path_env:
+                    path_env = f"{tc_path}:{path_env}"
+            env["PATH"] = path_env
 
         # Build the kernel
         os.chdir(kernel_dir)
         print(f"Building kernel for {device} with defconfig {defconfig}...")
+        print(f"Using PATH: {env['PATH']}")
         
         # Make defconfig
         subprocess.check_call(["make", defconfig], env=env)
