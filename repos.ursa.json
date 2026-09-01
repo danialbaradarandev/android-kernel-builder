@@ -1,13 +1,13 @@
 [
   {
     "kernelSource": {
-      "name": "sony-z2-kernel",
-      "repo": "https://github.com/LineageOS/android_kernel_sony_msm8974", 
-      "branch": "lineage-20.0",
+      "name": "sony-msm8974",
+      "repo": "https://github.com/sonyxperiadev/kernel",
+      "branch": "aosp/K.P.4.0.r1", 
       "device": "sirius",
-      "defconfig": "lineageos_sirius_defconfig" 
+      "defconfig": "sirius_defconfig"
     },
-    "withKernelSU": false, 
+    "withKernelSU": false,
     "toolchains": [
       {
         "repo": "https://android.googlesource.com/platform/prebuilts/gas/linux-x86",
@@ -22,8 +22,8 @@
     ],
     "params": {
       "ARCH": "arm",
-      "CROSS_COMPILE": "arm-eabi-",
-      "CROSS_COMPILE_ARM32": "arm-eabi-",
+      "CROSS_COMPILE": "arm-linux-androideabi-",
+      "CROSS_COMPILE_ARM32": "arm-linux-androideabi-",
       "CLANG_TRIPLE": "arm-linux-gnueabi-",
       "CC": "clang"
     }
